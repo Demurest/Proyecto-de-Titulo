@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<div class="container">
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-8">
+                <div class="card card-body bg-dark ">
+                    <form action="">
+                        <div class="form-group">
+                            <label for="ruta_imagenes" class="text-white">Ruta imagenes: </label>
+                            <input class="form-control" name="ruta_imagenes" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="ruta_guardado" class="text-white">Ruta guardado: </label>
+                            <input class="form-control" name="ruta_guardado" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="alto_imagen" class="text-white">Alto de la imagen: </label>
+                            <input class="form-control" name="alto_imagen" type="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="ancho_imagen" class="text-white">Ancho de la imagen: </label>
+                            <input class="form-control" name="ancho_imagen" type="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="Canales" class="text-white">Canales: </label>
+                            <input class="form-control" name="Canales" type="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="modelo_cnn" class="text-white">Modelo CNN: </label>
+                            <select class="form-select" id="modelo_cnn">
+                                <option selected>Choose...</option>
+                                <option value="VGG19">VGG19</option>
+                                <option value="VGG16">VGG16</option>
+                                <option value="MobileNet">MobileNet</option>
+                                <option value="Resnet50">Resnet50</option>
+                              </select>
+                        </div>
+                        
+                        <input type="submit" class="btn btn-primary mt-4" name="Envias datos">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+</div>
+{% endblock %}
