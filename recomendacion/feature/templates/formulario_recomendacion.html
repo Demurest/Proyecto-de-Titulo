@@ -20,30 +20,11 @@
                 <form  id="data-box" class="form-horizontal" action="{% url 'feat:recomendacion' %}" method="post">
                   {% csrf_token %}
                     <div class="form-group">
-                      <label class="text-white" for="IDs">Caracteristicas: </label>
+                      <label class="text-white" for="IDs">Features: </label>
                       <select class="form-select" name="array"  aria-label="Ruta de caracteristicas">
                         <option selected>Open this select menu</option>
                           <option value= '{ static "features_VGG19_Conv5_block1_features_fine_tunning.npy" }'>VGG19_Conv5_block1_features_fine_tunning</option>
-                          <option value= '{ static "features_VGG19_10.npy" }'>VGG19_10</option>
                       </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="text-white" for="IDs">ID's: </label>
-                        <select class="form-select" name="IDs"  aria-label="Ruta de caracteristicas">
-                          <option selected>Open this select menu</option>
-                            <option value= '{ static "ids/ids_5189.txt" }''>IDs 5189</option>
-                            <option value= '{ static "ids/ids_10.txt" }''>IDs 10</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="text-white" for="CSV">Ruta de CSV: </label>
-                        <select class="form-select" name="CSV"  aria-label="Ruta de caracteristicas">
-                          <option selected>Open this select menu</option>
-                          <option value= '{ static "CSV/tradesy_13370_compras.csv" }''>CSV 13370</option>
-                          <option value= '{ static "CSV/tradesy_feedback_10.csv" }''>CSV 10</option>
-                        </select>
                     </div>
 
                     <div class="form-group">
@@ -53,21 +34,25 @@
 
                     <div class="form-group">
                         <label class="text-white" for="validation_size">validation size: </label>
-                        <input class="form-control" name="validation_size" type="number">
+                        <input class="form-control" name="validation_size" type="number" step="0.1">
                     </div>
 
                     <div class="form-group">
-                        <label class="text-white" for="Numero_epocas">Numero de epocas: </label>
+                        <label class="text-white" for="Numero_epocas">Epochs: </label>
                         <input class="form-control" name="Numero_epocas" type="number">
                     </div>
                     
                     <div class="form-group">
-                        <label class="text-white" for="tamaño_lote">Tamaño del lote: </label>
+                        <label class="text-white" for="tamaño_lote">Batch Size: </label>
                         <input class="form-control" name="tamaño_lote" type="number">
                     </div>
-
-                    <input type="submit" class="btn btn-primary mt-4" name="Enviar">
+                    
+                    <div>
+                      <input type="submit" class="btn btn-primary mt-4 w-100" name="Enviar">  
+                    </div>
                 </form>
+
+                <a href="{% url 'feat:cargar datos' %}" type="button" class="btn btn-success mt-4" >Cargar</a>
             </div>
         </div>
         <div class="col-md-6">

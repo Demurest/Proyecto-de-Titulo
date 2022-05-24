@@ -1,6 +1,8 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 
-class DocumentForm(forms.Form): 
-    docfile = forms.FileField( 
-        label='Select a file">file', 
-        help_text='max. 42 megabytes' )
+class UploadFileForm(forms.Form): 
+    #title = forms.CharField(max_length=50)
+    document = forms.FileField(validators=[FileExtensionValidator(['npy'])])
+    IDs = forms.FileField()
+    CSV = forms.FileField()

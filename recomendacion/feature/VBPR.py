@@ -1,5 +1,3 @@
-
-
 import cornac
 from cornac.data import ImageModality , Reader
 from cornac.eval_methods import RatioSplit
@@ -7,52 +5,54 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import os 
+import shutil
 
-def Recomendacion(datos):
+def Recomendacion(datos,estatico):
 
-    for key in datos:
-        print (key,":",datos[key])
-        if key == "array":
-            #{ static "features_VGG19_Conv5_block1_features_fine_tunning.npy" }
-            Array_url = datos[key]
 
-            indice_i = Array_url.find('"')
-            indice_f = Array_url.find('.npy')
+    if estatico:
+        for key in datos:
+            print (key,":",datos[key])
+            if key == "array":
+                #{ static "features_VGG19_Conv5_block1_features_fine_tunning.npy" }
+                Array_url = datos[key]
 
-            Array_url = Array_url[(indice_i+1):indice_f]
-            Array_url = 'feature/static/'+ Array_url + '.npy'
-            print(Array_url)
-        if key == "IDs":
-            #{ static "ids/ids_5189.txt" }
-            Ids_url = datos[key]
+                indice_i = Array_url.find('"')
+                indice_f = Array_url.find('.npy')
 
-            indice_i = Ids_url.find('"')
-            indice_f = Ids_url.find('.txt')
+                Array_url = Array_url[(indice_i+1):indice_f]
+                Array_url = 'feature/static/'+ Array_url + '.npy'
+                print(Array_url)
+                
 
-            Ids_url = Ids_url[(indice_i+1):indice_f]
-            Ids_url = 'feature/static/'+ Ids_url + '.txt'
-            print(Ids_url)
+            if key == "test_size":
+                test_size_ = datos[key]
+            if key == "validation_size":
+                validation_size_ = datos[key]
+            if key == "Numero_epocas":
+                Numero_epocas = datos[key]
+            if key == "tamaño_lote":
+                tamaño_lote = datos[key]
 
-        if key == "CSV":
-            CSV_url = datos[key]
-
-            indice_i = CSV_url.find('"')
-            indice_f = CSV_url.find('csv')
-
-            CSV_url = CSV_url[(indice_i+1):indice_f]
-            CSV_url = 'feature/static/'+ CSV_url + 'csv'
-            print(CSV_url)
             
-
-        if key == "test_size":
-            test_size_ = datos[key]
-        if key == "validation_size":
-            validation_size_ = datos[key]
-        if key == "Numero_epocas":
-            Numero_epocas = datos[key]
-        if key == "tamaño_lote":
-            tamaño_lote = datos[key]
+            Ids_url = 'feature/static/ids/ids_5189.txt'
+            CSV_url = 'feature/static/CSV/tradesy_13370_compras.csv'
     #print(Array_url,"----", Ids_url,"-----",test_size,"-----",validation_size,"-------",Numero_epocas,"----",tamaño_lote)
+    else:
+        Array= str(datos['document'])
+        CSV= str(datos['CSV'])
+        Ids= str(datos['IDs'])
+
+        Array_url = 'feature/media/' + Array
+        CSV_url = 'feature/media/' + CSV
+        Ids_url = 'feature/media/' + Ids
+
+        test_size_= float(datos['test_size'])
+        Numero_epocas = int(datos['Numero_epocas'])
+        tamaño_lote = int(datos['tamaño_lote'])
+
+        #print(test_size_,Numero_epocas,tamaño_lote)
+
 
 
     reader = Reader()
@@ -94,9 +94,15 @@ def Recomendacion(datos):
     rec_50 = cornac.metrics.Recall(k=5)
     precision_50 = cornac.metrics.Precision(k=5)
 
+    caracter = "\|"
 
+    directorio = os.getcwd()
+    directorio = directorio.replace(caracter[0],'/')
+    print("working directory is: ", directorio)
 
-    ruta_guardado ='C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados/'
+    ruta_guardado = directorio + '/feature/static/resultados'
+
+    #ruta_guardado ='C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados'
     # Put everything together into an experiment and run it
     cornac.Experiment(eval_method=ratio_split,
      models=[vbpr],
@@ -106,9 +112,15 @@ def Recomendacion(datos):
 
 def listar():
 
-    url = 'C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados'
+    caracter = "\|"
 
-    contenido = os.listdir('C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados')
+    directorio = os.getcwd()
+    directorio = directorio.replace(caracter[0],'/')
+    print("working directory is: ", directorio)
+
+    url = directorio + '/feature/static/resultados'
+
+    contenido = os.listdir(url)
 
     imagenes = []
     for fichero in contenido:
@@ -116,7 +128,8 @@ def listar():
             imagenes.append(fichero)
     #print(imagenes)
 
-    archivo = 'C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados/' + imagenes[0]
+    archivo =  url + '/' + imagenes[0]
+    destino = directorio + '/feature/Resultados_guardados/' + imagenes[0]
 
     lineas = []
     with open(archivo,"r") as f:
@@ -153,11 +166,9 @@ def listar():
             inicio = valor.find('0')
             valor = valor[inicio:]
             resultados.append(valor)
+    
+    shutil.move(archivo,destino)
 
     return (resultados, Metricas)
-
-
-
-
 
 
