@@ -2,18 +2,11 @@
 
 {% load static %}
 
-{% include '_navbar.html' %}
 
 {% block content %}
-<div class="cotainer">
-  <!--
-    <div id="spinner-box" class="text-center mt-3">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  -->
-    <div class="row justify-content-center">
+
+<div class="row justify-content-center">
+           
         <div class="col-md-4">
             <div class="card card-body bg-dark mt-4">
           
@@ -29,22 +22,27 @@
 
                     <div class="form-group">
                         <label class="text-white" for="test_size">Test size: </label>
-                        <input class="form-control" name="test_size" type="number" step="0.1">
+                        <input class="form-control" name="test_size" type="number" step="0.1" min="0" max="1">
                     </div>
 
                     <div class="form-group">
                         <label class="text-white" for="validation_size">validation size: </label>
-                        <input class="form-control" name="validation_size" type="number" step="0.1">
+                        <input class="form-control" name="validation_size" type="number" step="0.1" min="0" max="1">
                     </div>
 
                     <div class="form-group">
                         <label class="text-white" for="Numero_epocas">Epochs: </label>
-                        <input class="form-control" name="Numero_epocas" type="number">
+                        <input class="form-control" name="Numero_epocas" type="number" min="1">
                     </div>
                     
                     <div class="form-group">
                         <label class="text-white" for="tamaño_lote">Batch Size: </label>
-                        <input class="form-control" name="tamaño_lote" type="number">
+                        <input class="form-control" name="tamaño_lote" type="number" min="1">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="text-white" for="niveles">Precision and Recall levels: </label>
+                      <input class="form-control" name="niveles" type="number" min="1" max="100">
                     </div>
                     
                     <div>
@@ -52,7 +50,7 @@
                     </div>
                 </form>
 
-                <a href="{% url 'feat:cargar datos' %}" type="button" class="btn btn-success mt-4" >Cargar</a>
+                <a href="{% url 'feat:cargar datos' %}" type="button" class="btn btn-success mt-4" >Load</a>
             </div>
         </div>
         <div class="col-md-6">
@@ -74,6 +72,7 @@
                 </tbody>
               </table>
         </div>
-    </div>
 </div>
+ 
+
 {% endblock %}

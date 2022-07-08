@@ -7,9 +7,8 @@ from django.conf import settings
 app_name='feat'
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('feature extraction', views.extraction,name='extraction'),
-    path('VBPR',views.VBPR,name="VBPR"),
+
+    path('',views.VBPR,name="VBPR"),
     path('recomendacion',views.recomendacion, name='recomendacion'),
     path('cargar datos',views.cargar_datos, name='cargar datos')
 ]

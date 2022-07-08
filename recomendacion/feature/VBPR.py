@@ -29,10 +29,14 @@ def Recomendacion(datos,estatico):
                 test_size_ = datos[key]
             if key == "validation_size":
                 validation_size_ = datos[key]
+                print("el tamaño de la validacion es: ", validation_size_)
             if key == "Numero_epocas":
                 Numero_epocas = datos[key]
             if key == "tamaño_lote":
                 tamaño_lote = datos[key]
+            if key == "niveles":
+                nivel = datos[key]
+            
 
             
             Ids_url = 'feature/static/ids/ids_5189.txt'
@@ -48,8 +52,10 @@ def Recomendacion(datos,estatico):
         Ids_url = 'feature/media/' + Ids
 
         test_size_= float(datos['test_size'])
+        validation_size_ = float(datos['validation_size'])
         Numero_epocas = int(datos['Numero_epocas'])
         tamaño_lote = int(datos['tamaño_lote'])
+        nivel = datos['niveles']
 
         #print(test_size_,Numero_epocas,tamaño_lote)
 
@@ -70,6 +76,7 @@ def Recomendacion(datos,estatico):
     ratio_split = RatioSplit(
         data=feedback,
         test_size=float(test_size_),
+        val_size = float(validation_size_),
         rating_threshold=0.5,
         exclude_unknowns=True,
         verbose=True,
@@ -91,18 +98,22 @@ def Recomendacion(datos,estatico):
 
     # Instantiate evaluation measures
     auc = cornac.metrics.AUC()
-    rec_50 = cornac.metrics.Recall(k=5)
-    precision_50 = cornac.metrics.Precision(k=5)
+    rec_50 = cornac.metrics.Recall(k=int(nivel))
+    precision_50 = cornac.metrics.Precision(k=int(nivel))
 
+
+
+    #para seleccionar el ditectorio actual de forma automatica.
     caracter = "\|"
 
     directorio = os.getcwd()
     directorio = directorio.replace(caracter[0],'/')
-    print("working directory is: ", directorio)
+    #print("working directory is: ", directorio)
 
     ruta_guardado = directorio + '/feature/static/resultados'
 
     #ruta_guardado ='C:/Users/erica/Desktop/Aplicacion proyecto de titulo/recomendacion/feature/static/resultados'
+    
     # Put everything together into an experiment and run it
     cornac.Experiment(eval_method=ratio_split,
      models=[vbpr],
@@ -116,7 +127,7 @@ def listar():
 
     directorio = os.getcwd()
     directorio = directorio.replace(caracter[0],'/')
-    print("working directory is: ", directorio)
+    #print("working directory is: ", directorio)
 
     url = directorio + '/feature/static/resultados'
 
@@ -135,11 +146,16 @@ def listar():
     with open(archivo,"r") as f:
         for i,linea in enumerate(f.readlines()):
             lineas.append(linea)
+        #print(lineas)
     
-    Titulos = lineas[3]
-    valores = lineas[5]
+    if lineas[1] == 'VALIDATION:\n':
+        Titulos = lineas[9]
+        valores = lineas[11]
+    else:
+        Titulos = lineas[3]
+        valores = lineas[5]
 
-    print(Titulos+"\n")
+    #print(Titulos+"\n")
     AUC = Titulos.find('AUC')
     Precision = Titulos.find('Precision')
     Recall = Titulos.find('Recall')
@@ -161,7 +177,7 @@ def listar():
         valor = valores[0:fin]
         valores = valores[(fin+1):]
         if valor == 'VBPR ':
-            print("es VBPR")
+            continue
         else:
             inicio = valor.find('0')
             valor = valor[inicio:]

@@ -1,70 +1,101 @@
 {% extends 'layout.html' %}
 
-{% include '_navbar.html' }
+
 
 {% block content %}
 
-    <div class="container">
+   
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-8 ">
                 <div class="card card-body bg-dark mt-4">
                     <form action="{% url 'feat:cargar datos' %}" enctype="multipart/form-data" class="form-horizontal" method="post">
                         {% csrf_token %}
                        
-                       
-                        {% for campo in form %}
-    
-                            {% if campo.name == 'document' %}
-                                <div class="form-group">
-                                    <label class="text-white" for="{{ campo.name }}">Upload features: </label>
-                                    <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".npy">
-                                    
-                                </div>
-                            {% endif %}
-    
-                            {% if campo.name == 'IDs' %}
-                                <div class="form-group">
-                                    <label class="text-white" for="{{ campo.name }}">Upload Id's: </label>
-                                    <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".txt">
+                       <div class="row">
+                            {% for campo in form %}
+        
+                                {% if campo.name == 'document' %}
+                                    <div class="col form-group">
+                                        <label class="text-white" for="{{ campo.name }}">Upload features: </label>
+                                        <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".npy">
+                                        
+                                    </div>
+                                {% endif %}
+        
+                                {% if campo.name == 'IDs' %}
+                                    <div class="col form-group">
+                                        <label class="text-white" for="{{ campo.name }}">Upload Id's: </label>
+                                        <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".txt">
 
-                                    
-                                </div>
-                            {% endif %}
-    
-                            {% if campo.name == 'CSV' %}
-                                <div class="form-group">
-                                    <label class="text-white" for="{{ campo.name }}">Upload dataset: </label>
-                                    <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".csv">
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-    
-                        <div class="form-group">
-                            <label class="text-white" for="test_size">Test size: </label>
-                            <input class="form-control" name="test_size" type="number" step="0.1">
-                        </div>
-    
-                        <div class="form-group">
-                            <label class="text-white" for="validation_size">validation size: </label>
-                            <input class="form-control" name="validation_size" type="number" step="0.1">
-                        </div>
-    
-                        <div class="form-group">
-                            <label class="text-white" for="Numero_epocas">Epochs: </label>
-                            <input class="form-control" name="Numero_epocas" type="number">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="text-white" for="tamaño_lote">Batch Size: </label>
-                            <input class="form-control" name="tamaño_lote" type="number">
+                                        
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
 
-                        <input type="submit" class="btn btn-primary mt-4 w-100" name="Enviar">
+                        <div class="row">
+                            {% for campo in form %}
+                                {% if campo.name == 'CSV' %}
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="text-white" for="{{ campo.name }}">Upload dataset: </label>
+                                        <input type="{{campo.field.widget.input_type}}" class="form-control" id ="documento" name="{{ campo.name }}" accept=".csv">
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-white" for="test_size">Test size: </label>
+                                    <input class="form-control" name="test_size" type="number" step="0.1" min="0" max="1">
+                                </div>
+                            </div>
+                        </div>
                         
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-white" for="validation_size">validation size: </label>
+                                    <input class="form-control" name="validation_size" type="number" step="0.1" min="0" max="1">
+                                </div>
+                            </div>
+                            
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-white" for="Numero_epocas">Epochs: </label>
+                                    <input class="form-control" name="Numero_epocas" type="number" min="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-white" for="tamaño_lote">Batch Size: </label>
+                                    <input class="form-control" name="tamaño_lote" type="number" min="1">
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="text-white" for="niveles">Precision and Recall levels: </label>
+                                    <input class="form-control" name="niveles" type="number" min="1" max="100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <input type="submit" class="btn btn-primary mt-4 w-100" name="Enviar">
+                            </div>
+                            <div class="col">
+                                <a href="{% url 'feat:VBPR' %}" type="button" class="btn btn-danger mt-4 w-100">Back</a>
+                            </div>              
+                        </div>                
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock %}

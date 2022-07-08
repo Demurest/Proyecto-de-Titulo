@@ -7,8 +7,6 @@ from .forms import UploadFileForm
 def home(request):
     return render(request,'inicio.html')
 
-def extraction(request):
-    return render(request, 'extraction.html')
 
 def cargar_datos(request):
 
@@ -63,7 +61,7 @@ def recomendacion(request):
     Recomendacion(datos,estatico)
     resultados, Metricas = listar()
     
-    print(resultados)
+    #print(resultados)
 
     return render(request, 'formulario_recomendacion.html', {'resultados':resultados, 'Metricas':Metricas})
 
